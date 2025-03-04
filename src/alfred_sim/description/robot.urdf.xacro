@@ -3,5 +3,6 @@
 <!-- This file has all the components of the body listed.  -->
 
     <xacro:include filename="robot_core.xacro" />
+    <xacro:include filename="gazebo_control.xacro" />
 
 </robot>
