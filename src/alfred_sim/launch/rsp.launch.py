@@ -7,36 +7,39 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    # Check if we're told to use sim time
-    use_sim_time = LaunchConfiguration('use_sim_time')
-
-    # Process the URDF file
-    pkg_path = os.path.join(get_package_share_directory('alfred_sim'))
-    xacro_file = os.path.join(pkg_path,'description','robot.urdf.xacro')
-    robot_description_config = Command(['xacro ', xacro_file, ' sim_mode:=', use_sim_time])
+    #package name 
+    package_name='alfred_sim'
     
+    # Checking if we were given any launch configurations
+    use_sim_time = LaunchConfiguration('use_sim_time')
+    urdf = LaunchConfiguration('urdf')
+
+    # Getting path to default files
+    pkg_path = os.path.join(get_package_share_directory(package_name))
+    xacro_file = os.path.join(pkg_path,'description','robot.urdf.xacro')
+
+    # Declaring launch arguments
+    declare_use_sim_time = DeclareLaunchArgument(
+            'use_sim_time', default_value='false',
+            description='Use sim time if true')
+
+    declare_urdf = DeclareLaunchArgument(
+            name='urdf', default_value=xacro_file,
+            description='Path to the robot description file')   
+
     # Create a robot_state_publisher node
-    params = {'robot_description': robot_description_config,'use_sim_time': use_sim_time}
     node_robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         output='screen',
-        parameters=[params]
-    )
-
-    node_joint_state_publisher = Node(
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
+        parameters=[{'use_sim_time': use_sim_time,'robot_description': Command(['xacro ', urdf])}]
     )
 
     # Launch!
     return LaunchDescription([
-        DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='false',
-            description='Use sim time if true'),
+        declare_use_sim_time,
+        declare_urdf, 
         node_robot_state_publisher,
-        node_joint_state_publisher,
     ])
 
 ## Additionally : 
