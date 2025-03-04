@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-
+<!-- This uses a plugin controller made by gazebo, works only for simulation! -->
    <gazebo>
       <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
          <right_joint>right_wheel_joint</right_joint>
