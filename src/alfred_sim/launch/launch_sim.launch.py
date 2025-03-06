@@ -2,15 +2,12 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 
-
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 
 from launch_ros.actions import Node
-
-
 
 def generate_launch_description():
 
@@ -24,6 +21,9 @@ def generate_launch_description():
     default_world = os.path.join(get_package_share_directory(package_name),'worlds', 'empty.world')
     default_rviz = os.path.join(get_package_share_directory(package_name),'rviz', 'view_bot.rviz')
     robot_controllers = os.path.join(get_package_share_directory(package_name),'config','my_controllers.yaml')
+    bridge_params = os.path.join(get_package_share_directory(package_name),'config','gz_bridge.yaml')
+    ekf_params = os.path.join(get_package_share_directory(package_name),'config','ekf.yaml')
+
     # declare launch arguments 
     declare_world = DeclareLaunchArgument(
         'world',
@@ -75,8 +75,6 @@ def generate_launch_description():
         arguments=["joint_broad"],
     )
 
-
-    bridge_params = os.path.join(get_package_share_directory(package_name),'config','gz_bridge.yaml')
     ros_gz_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
@@ -84,6 +82,15 @@ def generate_launch_description():
             '--ros-args',
             '-p',
             f'config_file:={bridge_params}',
+        ]
+    )
+
+    ekf_node = Node(
+        package="robot_localization",
+        executable="ekf_node",
+        parameters=[
+            ekf_params,
+            {'use_sim_time': True},
         ]
     )
 
@@ -103,5 +110,6 @@ def generate_launch_description():
         spawn_entity,
         diff_drive_spawner,
         joint_broad_spawner,
+        ekf_node,
         rviz2
     ])
