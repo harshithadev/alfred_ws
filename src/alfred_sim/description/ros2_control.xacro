@@ -36,3 +36,9 @@
 <!-- to move the robot using twist keyboard, before connecting nav :  -->
 <!-- remove the space between dashes for ros args and remap -->
 <!-- ros2 run teleop_twist_keyboard teleop_twist_keyboard  - -ros-args - -remap /cmd_vel:=/diff_cont/cmd_vel -p stamped:=true -->
+
+<!-- 
+Additionally : 
+ros2 daemon stop
+killall -9 gzserver gzclient 
+-->
