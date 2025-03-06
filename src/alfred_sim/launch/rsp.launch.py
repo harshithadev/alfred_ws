@@ -20,7 +20,7 @@ def generate_launch_description():
 
     # Declaring launch arguments
     declare_use_sim_time = DeclareLaunchArgument(
-            'use_sim_time', default_value='false',
+            'use_sim_time', default_value='true',
             description='Use sim time if true')
 
     declare_urdf = DeclareLaunchArgument(

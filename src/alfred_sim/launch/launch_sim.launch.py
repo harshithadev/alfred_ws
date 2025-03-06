@@ -23,7 +23,7 @@ def generate_launch_description():
     # Path to default world 
     default_world = os.path.join(get_package_share_directory(package_name),'worlds', 'empty.world')
     default_rviz = os.path.join(get_package_share_directory(package_name),'rviz', 'view_bot.rviz')
- 
+    robot_controllers = os.path.join(get_package_share_directory(package_name),'config','my_controllers.yaml')
     # declare launch arguments 
     declare_world = DeclareLaunchArgument(
         'world',
@@ -58,6 +58,22 @@ def generate_launch_description():
                                    '-name', 'alfred',
                                    '-z', '0.1'],
                         output='screen')
+    
+    diff_drive_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            'diff_cont',
+            '--param-file',
+            robot_controllers,
+            ],
+    )
+
+    joint_broad_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_broad"],
+    )
 
 
     bridge_params = os.path.join(get_package_share_directory(package_name),'config','gz_bridge.yaml')
@@ -81,9 +97,11 @@ def generate_launch_description():
     return LaunchDescription([
         declare_world,
         rsp,
+        ros_gz_bridge,
         gazebo_server,
         gazebo_client,
-        ros_gz_bridge,
         spawn_entity,
+        diff_drive_spawner,
+        joint_broad_spawner,
         rviz2
     ])
