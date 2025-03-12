@@ -166,6 +166,7 @@ hardware_interface::return_type AlfredInterface::read(const rclcpp::Time &,
         position_states_.at(1) += velocity_states_.at(1) * dt;
       }
     }
+    RCLCPP_INFO(rclcpp::get_logger("AlfredInterface"), "reading position and velocity");
     last_run_ = rclcpp::Clock().now();
   }
   return hardware_interface::return_type::OK;
@@ -198,11 +199,15 @@ hardware_interface::return_type AlfredInterface::write(const rclcpp::Time &,
   
   message_stream << std::fixed << std::setprecision(2) << "JOINT_VELOCITIES " <<
     "r" << compensate_zeros_right << velocity_commands_.at(0) << 
-    ",l" << compensate_zeros_left << velocity_commands_.at(1) << ",";
+    ",l" << compensate_zeros_left << velocity_commands_.at(1);
 
+  
   try
   {
     teensy_.Write(message_stream.str());
+    RCLCPP_ERROR_STREAM(rclcpp::get_logger("AlfredInterface"),
+                        "FALSE ALARM : sending message "
+                            << message_stream.str() << " to the port " << port_);
   }
   catch (...)
   {
