@@ -34,10 +34,6 @@
         </xacro:inertial_box>
     </link>
 
-    <gazebo reference="chassis">
-        <material>Gazebo/Orange</material>
-    </gazebo>
-
 
     <!-- LEFT WHEEL LINK -->
     <joint name="left_wheel_joint" type="continuous">
@@ -64,11 +60,6 @@
         </xacro:inertial_cylinder>
     </link>
 
-    <gazebo reference="left_wheel">
-        <material>Gazebo/Blue</material>
-    </gazebo>
-
-
  <!-- RIGHT WHEEL LINK -->
     <joint name="right_wheel_joint" type="continuous">
         <parent link="base_link"/>
@@ -94,11 +85,6 @@
         </xacro:inertial_cylinder>
     </link>
 
-    <gazebo reference="right_wheel">
-        <material>Gazebo/Blue</material>
-    </gazebo>
-
-
 <!-- CASTER WHEEL LINK Front-Left-->
     <joint name="caster_wheel_fl_joint" type="fixed">
         <parent link="base_link"/>
@@ -122,14 +108,6 @@
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_sphere>
     </link>
-
-    <gazebo reference="caster_wheel_fl">
-        <material>Gazebo/White</material>
-        <!--the lesser the value the lesser the friction-->
-        <mu1 value="0.000000000000000001"/>
-        <mu2 value="0.000000000000000001"/>
-    </gazebo>
-
 
 <!-- CASTER WHEEL LINK Front-Right-->
     <joint name="caster_wheel_fr_joint" type="fixed">
@@ -155,14 +133,6 @@
         </xacro:inertial_sphere>
     </link>
 
-    <gazebo reference="caster_wheel_fr">
-        <material>Gazebo/White</material>
-        <!--the lesser the value the lesser the friction-->
-        <mu1 value="0.000000000000000001"/>
-        <mu2 value="0.000000000000000001"/>
-    </gazebo>
-
-
 <!-- CASTER WHEEL LINK Back-Left-->
     <joint name="caster_wheel_bl_joint" type="fixed">
         <parent link="base_link"/>
@@ -187,14 +157,6 @@
         </xacro:inertial_sphere>
     </link>
 
-    <gazebo reference="caster_wheel_bl">
-        <material>Gazebo/White</material>
-        <!--the lesser the value the lesser the friction-->
-        <mu1 value="0.000000000000000001"/>
-        <mu2 value="0.000000000000000001"/>
-    </gazebo>
-
-
 <!-- CASTER WHEEL LINK Back-Right-->
     <joint name="caster_wheel_br_joint" type="fixed">
         <parent link="base_link"/>
@@ -218,13 +180,5 @@
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_sphere>
     </link>
-
-    <gazebo reference="caster_wheel_br">
-        <material>Gazebo/White</material>
-        <!--the lesser the value the lesser the friction-->
-        <mu1 value="0.000000000000000001"/>
-        <mu2 value="0.000000000000000001"/>
-    </gazebo>
-
 
 </robot>
