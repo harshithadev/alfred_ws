@@ -198,8 +198,8 @@ hardware_interface::return_type AlfredInterface::write(const rclcpp::Time &,
   }
   
   message_stream << std::fixed << std::setprecision(2) << "JOINT_VELOCITIES " <<
-    "r" << compensate_zeros_right << velocity_commands_.at(0) << 
-    ",l" << compensate_zeros_left << velocity_commands_.at(1);
+    "r"  << velocity_commands_.at(0) << 
+    ",l" << velocity_commands_.at(1);
 
   
   try
