@@ -155,6 +155,10 @@ hardware_interface::return_type AlfredInterface::read(const rclcpp::Time &,
     std::string res;
     while(std::getline(ss, res, ','))
     {
+      // RCLCPP_ERROR_STREAM(rclcpp::get_logger("AlfredInterface"),
+      // "FALSE ALARM : rec message "
+      //     << res << " to the port " << port_);
+
       if(res.at(0) == 'r')
       {
         velocity_states_.at(0) = std::stod(res.substr(1, res.size()));
@@ -180,22 +184,6 @@ hardware_interface::return_type AlfredInterface::write(const rclcpp::Time &,
   std::stringstream message_stream;
   std::string compensate_zeros_right = "";
   std::string compensate_zeros_left = "";
-  if(std::abs(velocity_commands_.at(0)) < 10.0)
-  {
-    compensate_zeros_right = "0";
-  }
-  else
-  {
-    compensate_zeros_right = "";
-  }
-  if(std::abs(velocity_commands_.at(1)) < 10.0)
-  {
-    compensate_zeros_left = "0";
-  }
-  else
-  {
-    compensate_zeros_left = "";
-  }
   
   message_stream << std::fixed << std::setprecision(2) << "JOINT_VELOCITIES " <<
     "r"  << velocity_commands_.at(0) << 
@@ -205,10 +193,11 @@ hardware_interface::return_type AlfredInterface::write(const rclcpp::Time &,
   try
   {
     teensy_.Write(message_stream.str());
-    RCLCPP_ERROR_STREAM(rclcpp::get_logger("AlfredInterface"),
-                        "FALSE ALARM : sending message "
-                            << message_stream.str() << " to the port " << port_);
-  }
+    // RCLCPP_ERROR_STREAM(rclcpp::get_logger("AlfredInterface"),
+    //                     "FALSE ALARM : sending message "
+    //                         << message_stream.str() << " to the port " << port_);
+  
+   }
   catch (...)
   {
     RCLCPP_ERROR_STREAM(rclcpp::get_logger("AlfredInterface"),
