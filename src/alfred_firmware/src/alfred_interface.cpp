@@ -155,9 +155,9 @@ hardware_interface::return_type AlfredInterface::read(const rclcpp::Time &,
     std::string res;
     while(std::getline(ss, res, ','))
     {
-      // RCLCPP_ERROR_STREAM(rclcpp::get_logger("AlfredInterface"),
-      // "FALSE ALARM : rec message "
-      //     << res << " to the port " << port_);
+      RCLCPP_ERROR_STREAM(rclcpp::get_logger("AlfredInterface"),
+      "FALSE ALARM : rec message "
+          << res << " to the port " << port_);
 
       if(res.at(0) == 'r')
       {
@@ -187,7 +187,7 @@ hardware_interface::return_type AlfredInterface::write(const rclcpp::Time &,
   
   message_stream << std::fixed << std::setprecision(2) << "JOINT_VELOCITIES " <<
     "r"  << velocity_commands_.at(0) << 
-    ",l" << velocity_commands_.at(1);
+    ",l" << velocity_commands_.at(1) << "\n";
 
   
   try
