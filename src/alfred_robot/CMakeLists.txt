@@ -24,7 +24,7 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY config description launch include rviz src 
+  DIRECTORY config description launch rviz 
   DESTINATION share/${PROJECT_NAME}
 )
 
