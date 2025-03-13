@@ -1,6 +1,8 @@
 #include <rclcpp/rclcpp.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <libserial/SerialPort.h>
+#include <iomanip>
+#include <sstream>
 
 using namespace LibSerial;
 
@@ -34,14 +36,22 @@ public:
 private:
     void cmdVelCallback(const geometry_msgs::msg::Twist::SharedPtr msg) {
         if (serial_port.IsOpen()) {
-            // Format data to send over serial
-            std::string serial_data = "Vx:" + std::to_string(msg->linear.x) +
-                                      " Vy:" + std::to_string(msg->linear.y) +
-                                      " Wz:" + std::to_string(msg->angular.z) + "\n";
+            // Assuming a simple differential drive model
+            double wheel_base = 0.600; // Distance between wheels
+            double wheel_radius = 0.075; // Radius of each wheel
+
+            // Compute left and right wheel velocities
+            double v_right = (msg->linear.x + (msg->angular.z * wheel_base / 2)) / wheel_radius;
+            double v_left = (msg->linear.x - (msg->angular.z * wheel_base / 2)) / wheel_radius;
+
+            // Format the string properly
+            std::ostringstream serial_data;
+            serial_data << "JOINT_VELOCITIES r" << std::fixed << std::setprecision(1) << v_right
+                        << ",l" << std::fixed << std::setprecision(1) << v_left << "\n";
 
             try {
-                serial_port.Write(serial_data);
-                RCLCPP_INFO(this->get_logger(), "Sent: %s", serial_data.c_str());
+                serial_port.Write(serial_data.str());
+                RCLCPP_INFO(this->get_logger(), "Sent: %s", serial_data.str().c_str());
             } catch (const std::exception &e) {
                 RCLCPP_ERROR(this->get_logger(), "Serial write error: %s", e.what());
             }
