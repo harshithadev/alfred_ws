@@ -113,3 +113,6 @@ def generate_launch_description():
         ekf_node,
         rviz2
     ])
+
+## to open with house model on gazebo : 
+## ros2 launch alfred_sim launch_sim.launch.py world:=/home/harshdev/alfred_ws/src/aws-robomaker-small-house-world/worlds/small_house.world
