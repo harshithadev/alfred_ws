@@ -26,3 +26,5 @@ ros2 launch nav2_bringup localization_launch.py map:=/home/hdev/alfred_ws/src/al
 
 ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true map_subscribe_transient_local:=true
 (set destination pose here)
+
+next try : https://question1975.rssing.com/chan-34076341/article78.html
