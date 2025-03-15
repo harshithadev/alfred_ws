@@ -1,0 +1,15 @@
+colcon build
+
+. install/setup.bash
+ros2 launch alfred_sim launch_sim.launch.py world:=/home/harshdev/alfred_ws/src/aws-robomaker-small-house-world/worlds/small_house.world
+
+ros2 launch nav2_bringup navigation_launch.py use_sim_time:=True
+
+ros2 launch slam_toolbox online_async_launch.py use_sim_time:=True
+
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap /cmd_vel:=/diff_cont/cmd_vel -p stamped:=tru
+
+then after mapping, to save : ros2 run nav2_map_server map_saver_cli -f maps/my_home
+
+---------------
+
