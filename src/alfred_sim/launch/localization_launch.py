@@ -31,7 +31,7 @@ from nav2_common.launch import RewrittenYaml
 
 def generate_launch_description():
     # Get the launch directory
-    bringup_dir = get_package_share_directory('nav2_bringup')
+    bringup_dir = get_package_share_directory('alfred_sim')
 
     namespace = LaunchConfiguration('namespace')
     map_yaml_file = LaunchConfiguration('map')
@@ -72,19 +72,23 @@ def generate_launch_description():
         'namespace', default_value='', description='Top-level namespace'
     )
 
+    # I have hardcoded my map, change it when the workspace changes, it is not relative.
+    ## fret not, it is relative!
     declare_map_yaml_cmd = DeclareLaunchArgument(
-        'map', default_value='', description='Full path to map yaml file to load'
+        'map', 
+        default_value=os.path.join(bringup_dir, 'maps', 'my_home.yaml'), 
+        description='Full path to map yaml file to load'
     )
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
         'use_sim_time',
-        default_value='false',
+        default_value='true',
         description='Use simulation (Gazebo) clock if true',
     )
 
     declare_params_file_cmd = DeclareLaunchArgument(
         'params_file',
-        default_value=os.path.join(bringup_dir, 'params', 'nav2_params.yaml'),
+        default_value=os.path.join(bringup_dir, 'config', 'nav2_params.yaml'),
         description='Full path to the ROS2 parameters file to use for all launched nodes',
     )
 
