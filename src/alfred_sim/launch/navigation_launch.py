@@ -319,6 +319,13 @@ def generate_launch_description():
         ],
     )
 
+    load_stamper = Node(
+        package='stamp_and_redirect',            
+        executable='stamp_and_redirect',    
+        name='twist_converter_node',    
+        output='screen'
+    )
+
     # Create the launch description and populate
     ld = LaunchDescription()
 
@@ -337,5 +344,6 @@ def generate_launch_description():
     # Add the actions to launch all of the navigation nodes
     ld.add_action(load_nodes)
     ld.add_action(load_composable_nodes)
+    ld.add_action(load_stamper)
 
     return ld

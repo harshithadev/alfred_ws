@@ -12,13 +12,14 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     package_name='alfred_sim'
+    world_package='aws_robomaker_small_house_world'
 
     # Launch configurations
     world = LaunchConfiguration('world')
     rviz = LaunchConfiguration('rviz')
 
     # Path to default world 
-    default_world = os.path.join(get_package_share_directory(package_name),'worlds', 'empty.world')
+    default_world = os.path.join(get_package_share_directory(world_package),'worlds', 'small_house.world')
     default_rviz = os.path.join(get_package_share_directory(package_name),'rviz', 'view_bot.rviz')
     robot_controllers = os.path.join(get_package_share_directory(package_name),'config','my_controllers.yaml')
     bridge_params = os.path.join(get_package_share_directory(package_name),'config','gz_bridge.yaml')
