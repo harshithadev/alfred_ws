@@ -27,6 +27,6 @@ sudo apt install -y ros-jazzy-desktop
 # Possible values are: setup.bash, setup.sh, setup.zsh
 source /opt/ros/jazzy/setup.bash
 sudo echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
-echo "export ROS_DOMAIN_ID=1611" >> ~/.bashrc
+echo "export ROS_DOMAIN_ID=16" >> ~/.bashrc
 
 printenv | grep -i ROS
