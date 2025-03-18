@@ -12,6 +12,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     package_name='alfred_robot'
+    lidar_package_name='sllidar_ros2'
 
     # Launch configurations
     rviz = LaunchConfiguration('rviz')
@@ -27,6 +28,7 @@ def generate_launch_description():
                 )]), launch_arguments={'use_sim_time': 'false', 'urdf': urdf_path}.items()
     )
     
+    # adding ros2 control 
     controller_manager = Node(
         package="controller_manager",
         executable="ros2_control_node",
@@ -50,6 +52,13 @@ def generate_launch_description():
         arguments=["joint_broad"],
     )
 
+    # adding lidar
+    lidar_node = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory(lidar_package_name),'launch','sllidar_c1_launch.py'
+                )]),
+    )
+
     rviz2 = Node(
         package='rviz2',
         executable='rviz2',
@@ -63,5 +72,6 @@ def generate_launch_description():
         rviz2,
         diff_drive_spawner,
         joint_broad_spawner,
+        lidar_node,
         
     ])
