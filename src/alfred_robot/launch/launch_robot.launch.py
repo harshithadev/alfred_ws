@@ -59,17 +59,17 @@ def generate_launch_description():
                 )]),
     )
 
-    rviz2 = Node(
-        package='rviz2',
-        executable='rviz2',
-        arguments=['-d', default_rviz],
-        output='screen',)
+    # rviz2 = Node(
+    #     package='rviz2',
+    #     executable='rviz2',
+    #     arguments=['-d', default_rviz],
+    #     output='screen',)
 
     # Launch them all!
     return LaunchDescription([
         rsp,
         controller_manager, 
-        rviz2,
+        # rviz2,
         diff_drive_spawner,
         joint_broad_spawner,
         lidar_node,
