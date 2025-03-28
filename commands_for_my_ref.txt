@@ -28,3 +28,37 @@ ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true map_subscribe_t
 (set destination pose here)
 
 next try : https://question1975.rssing.com/chan-34076341/article78.html
+
+
+------------------
+
+To set goal from command line : 
+goal pose message type : geometry_msgs/msg/PoseStamped
+
+ex : 
+header:
+  stamp:
+    sec: 1743144540
+    nanosec: 538057346
+  frame_id: map
+pose:
+  position:
+    x: 2.975454807281494
+    y: -0.017173022031784058
+    z: 0.0
+  orientation:
+    x: 0.0
+    y: 0.0
+    z: 0.010210279927679132
+    w: 0.9999478737333254
+
+//to return to base
+ros2 topic pub --once /goal_pose geometry_msgs/msg/PoseStamped '
+{
+  header: {frame_id: "map"},
+  pose: {
+    position: {x: 0.0, y: 0.0, z: 0.0},
+    orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}
+  }
+}'
+
