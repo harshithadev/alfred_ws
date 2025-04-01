@@ -143,38 +143,56 @@ CallbackReturn AlfredInterface::on_deactivate(const rclcpp_lifecycle::State &)
 
 // reading the current velocity of the motors and setting it to the variables. 
 hardware_interface::return_type AlfredInterface::read(const rclcpp::Time &,
-                                                          const rclcpp::Duration &)
+  const rclcpp::Duration &)
 {
-  // Interpret the string
-  if(teensy_.IsDataAvailable())
-  {
+  double wheel_radius = 0.12; // meters
+
+  if (teensy_.IsDataAvailable())
+    {
     auto dt = (rclcpp::Clock().now() - last_run_).seconds();
     std::string message;
     teensy_.ReadLine(message);
     std::stringstream ss(message);
     std::string res;
-    while(std::getline(ss, res, ','))
-    {
-      RCLCPP_ERROR_STREAM(rclcpp::get_logger("AlfredInterface"),
-      "FALSE ALARM : rec message "
-          << res << " to the port " << port_);
 
-      if(res.at(0) == 'r')
+    while (std::getline(ss, res, ','))
       {
-        velocity_states_.at(0) = std::stod(res.substr(1, res.size()));
+      try
+      {
+        if (res.empty()) continue;
+
+      char tag = res.at(0);  // 'r' or 'l'
+      double rpm = std::stod(res.substr(1));
+      double velocity_mps = (rpm * 2 * M_PI * wheel_radius) / 60.0;
+
+      if (tag == 'r')
+      {
+        velocity_states_.at(0) = velocity_mps;
         position_states_.at(0) += velocity_states_.at(0) * dt;
       }
-      else if(res.at(0) == 'l')
+      else if (tag == 'l')
       {
-        velocity_states_.at(1) = std::stod(res.substr(1, res.size()));
+        velocity_states_.at(1) = velocity_mps;
         position_states_.at(1) += velocity_states_.at(1) * dt;
       }
-    }
+
+        RCLCPP_DEBUG_STREAM(rclcpp::get_logger("AlfredInterface"),
+        "Parsed " << tag << " rpm=" << rpm << " → " << velocity_mps << " m/s");
+      }
+        catch (const std::exception &e)
+      {
+        RCLCPP_WARN_STREAM(rclcpp::get_logger("AlfredInterface"),
+        "Failed to parse motor data: " << e.what() << " | message: " << res);
+      }
+      }
+
     RCLCPP_INFO(rclcpp::get_logger("AlfredInterface"), "reading position and velocity");
     last_run_ = rclcpp::Clock().now();
-  }
+    }
+
   return hardware_interface::return_type::OK;
 }
+
 
 
 hardware_interface::return_type AlfredInterface::write(const rclcpp::Time &,
