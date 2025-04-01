@@ -1,7 +1,8 @@
-laser_scan_filter_chain:
+scan_filter_node:
   ros__parameters:
-    - name: angle_filter
-      type: laser_filters/ScanAngleFilter
-      params:
-        lower_angle: -1.57
-        upper_angle: 1.57
+    laser_scan_filter_chain:
+      - name: angle_filter
+        type: laser_filters/ScanAngleFilter
+        params:
+          lower_angle: -1.57
+          upper_angle: 1.57
