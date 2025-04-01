@@ -76,16 +76,16 @@ def generate_launch_description():
                          'scan_mode': scan_mode}],
             output='screen'),
 
-         Node(
-            package='laser_filters',
-            executable='scan_to_scan_filter_chain',
-            name='scan_filter_node',
-            parameters=[laser_filter_config],
-            remappings=[
-                ('scan', '/scan'),  # Input from LiDAR
-                ('scan_filtered', '/scan_filtered')  # Output after filtering
-            ],
-            output='screen'
-        ),
+        #  Node(
+        #     package='laser_filters',
+        #     executable='scan_to_scan_filter_chain',
+        #     name='scan_filter_node',
+        #     parameters=[laser_filter_config],
+        #     remappings=[
+        #         ('scan', '/scan'),  # Input from LiDAR
+        #         ('scan_filtered', '/scan_filtered')  # Output after filtering
+        #     ],
+        #     output='screen'
+        # ),
     ])
 
