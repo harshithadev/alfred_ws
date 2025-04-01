@@ -1,5 +1,5 @@
-ros__parameters:
-  laser_scan_filter_chain:
+laser_scan_filter_chain:
+  ros__parameters:
     - name: angle_filter
       type: laser_filters/ScanAngleFilter
       params:
