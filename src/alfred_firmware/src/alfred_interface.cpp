@@ -161,14 +161,12 @@ hardware_interface::return_type AlfredInterface::read(const rclcpp::Time &,
 
       if(res.at(0) == 'r')
       {
-        double wheel_radius = 0.12; 
-        velocity_states_.at(0) = (std::stod(res.substr(1, res.size())) * 2 * M_PI * wheel_radius) / 60.0;
+        velocity_states_.at(0) = std::stod(res.substr(1, res.size()));
         position_states_.at(0) += velocity_states_.at(0) * dt;
       }
       else if(res.at(0) == 'l')
       {
-        double wheel_radius = 0.12; 
-        velocity_states_.at(1) = (std::stod(res.substr(1, res.size())) * 2 * M_PI * wheel_radius) / 60.0;
+        velocity_states_.at(1) = std::stod(res.substr(1, res.size()));
         position_states_.at(1) += velocity_states_.at(1) * dt;
       }
     }
