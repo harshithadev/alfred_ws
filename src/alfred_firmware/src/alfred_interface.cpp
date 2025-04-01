@@ -145,6 +145,7 @@ CallbackReturn AlfredInterface::on_deactivate(const rclcpp_lifecycle::State &)
 hardware_interface::return_type AlfredInterface::read(const rclcpp::Time &,
                                                           const rclcpp::Duration &)
 {
+  double wheel_radius = 0.12; 
   // Interpret the string
   if(teensy_.IsDataAvailable())
   {
@@ -159,16 +160,18 @@ hardware_interface::return_type AlfredInterface::read(const rclcpp::Time &,
       "FALSE ALARM : rec message "
           << res << " to the port " << port_);
 
-      if(res.at(0) == 'r')
-      {
-        velocity_states_.at(0) = std::stod(res.substr(1, res.size()));
-        position_states_.at(0) += velocity_states_.at(0) * dt;
-      }
-      else if(res.at(0) == 'l')
-      {
-        velocity_states_.at(1) = std::stod(res.substr(1, res.size()));
-        position_states_.at(1) += velocity_states_.at(1) * dt;
-      }
+          if(res.at(0) == 'r')
+          {
+            double rpm = std::stod(res.substr(1, res.size()));
+            velocity_states_.at(0) = (rpm * 2 * M_PI * wheel_radius) / 60.0;
+            position_states_.at(0) += velocity_states_.at(0) * dt;
+          }
+          else if(res.at(0) == 'l')
+          {
+            double rpm = std::stod(res.substr(1, res.size()));
+            velocity_states_.at(1) = (rpm * 2 * M_PI * wheel_radius) / 60.0;
+            position_states_.at(1) += velocity_states_.at(1) * dt;
+          }
     }
     RCLCPP_INFO(rclcpp::get_logger("AlfredInterface"), "reading position and velocity");
     last_run_ = rclcpp::Clock().now();
