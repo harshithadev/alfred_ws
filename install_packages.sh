@@ -21,5 +21,7 @@ sudo apt install -y libserial-dev
 sudo apt install -y ros-jazzy-navigation2
 sudo apt install -y ros-jazzy-nav2-bringup
 sudo apt install -y ros-jazzy-nav2-minimal-tb*
+sudo apt install -y ros-jazzy-laser-filters
+
 
 echo "All commands executed successfully."

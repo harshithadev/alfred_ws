@@ -19,6 +19,14 @@ def generate_launch_description():
     angle_compensate = LaunchConfiguration('angle_compensate', default='true')
     scan_mode = LaunchConfiguration('scan_mode', default='Standard')
 
+    package_name = 'alfred_robot'
+
+    laser_filter_config = os.path.join(
+        get_package_share_directory(package_name),
+        'config',
+        'laser_filter.yaml'
+    )
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'channel_type',
@@ -67,5 +75,17 @@ def generate_launch_description():
                          'angle_compensate': angle_compensate, 
                          'scan_mode': scan_mode}],
             output='screen'),
+
+         Node(
+            package='laser_filters',
+            executable='scan_to_scan_filter_chain',
+            name='scan_filter_node',
+            parameters=[laser_filter_config],
+            remappings=[
+                ('scan', '/scan'),  # Input from LiDAR
+                ('scan_filtered', '/scan_filtered')  # Output after filtering
+            ],
+            output='screen'
+        ),
     ])
 
