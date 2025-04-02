@@ -5,10 +5,10 @@
 #define PWM2 8   // Right Motor PWM
 #define DIR2 9   // Right Motor Direction
 
-#define ENC1_A 4
-#define ENC1_B 7
-#define ENC2_A 2
-#define ENC2_B 3
+#define ENC1_A 2
+#define ENC1_B 3
+#define ENC2_A 4
+#define ENC2_B 7
 
 // Encoder constants
 #define CPR 153500          // Counts per revolution
@@ -29,7 +29,7 @@ unsigned long prevTime = 0;
 // Compute RPM function
 double computeRPM(long deltaCount, int motorID) {
   double timeFactor = (60000.0 / SAMPLE_TIME);
-  return (motorID == 2) ? -(deltaCount * timeFactor) / CPR : (deltaCount * timeFactor) / CPR;
+  return (motorID == 1) ? -(deltaCount * timeFactor) / CPR : (deltaCount * timeFactor) / CPR;
 }
 
 // Convert RPM to linear velocity (m/s)
@@ -83,10 +83,10 @@ void loop() {
     double vel2 = rpmToVelocity(currentRPM2);
 
     Serial.print("r");
-    Serial.print(vel1, 3);  // 4 decimal places
+    Serial.print(vel2, 3);  // 4 decimal places
     Serial.print(",");
     Serial.print("l");
-    Serial.println(vel2, 3);
+    Serial.println(vel1, 3);
   }
 }
 
