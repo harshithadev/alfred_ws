@@ -5,14 +5,14 @@
 #define PWM2 8   // Right Motor PWM
 #define DIR2 9   // Right Motor Direction
 
-#define ENC1_A 2
-#define ENC1_B 3
-#define ENC2_A 4
-#define ENC2_B 7
+#define ENC1_A 4
+#define ENC1_B 7
+#define ENC2_A 2
+#define ENC2_B 3
 
 // Encoder constants
 #define CPR 153500          // Counts per revolution
-#define SAMPLE_TIME 100     // Sample time in milliseconds
+#define SAMPLE_TIME 10     // Sample time in milliseconds
 #define MAX_RPM 35          // Max RPM for PWM mapping
 #define WHEEL_RADIUS 0.12   // In meters — adjust to your robot's wheel
 
@@ -29,7 +29,7 @@ unsigned long prevTime = 0;
 // Compute RPM function
 double computeRPM(long deltaCount, int motorID) {
   double timeFactor = (60000.0 / SAMPLE_TIME);
-  return (motorID == 1) ? -(deltaCount * timeFactor) / CPR : (deltaCount * timeFactor) / CPR;
+  return (motorID == 2) ? -(deltaCount * timeFactor) / CPR : (deltaCount * timeFactor) / CPR;
 }
 
 // Convert RPM to linear velocity (m/s)
