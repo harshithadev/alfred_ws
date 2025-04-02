@@ -11,9 +11,9 @@
 #define ENC2_B 7
 
 // Encoder constants
-#define CPR 153500          // Counts per revolution
+#define CPR 153550          // Counts per revolution
 #define SAMPLE_TIME 10     // Sample time in milliseconds
-#define MAX_RPM 35          // Max RPM for PWM mapping
+#define MAX_RPM 20        // Max RPM for PWM mapping
 #define WHEEL_RADIUS 0.12   // In meters — adjust to your robot's wheel
 
 // Velocity commands in RPM
@@ -28,8 +28,14 @@ unsigned long prevTime = 0;
 
 // Compute RPM function
 double computeRPM(long deltaCount, int motorID) {
+  // SAMPLE_TIME is in milliseconds, so this converts to samples per minute
   double timeFactor = (60000.0 / SAMPLE_TIME);
-  return (motorID == 1) ? -(deltaCount * timeFactor) / CPR : (deltaCount * timeFactor) / CPR;
+
+  // RPM = (deltaCount / CPR) * (60000 / SAMPLE_TIME)
+  // motorID == 1 → left wheel → invert sign if needed for direction consistency
+  return (motorID == 1)
+           ? -(deltaCount * timeFactor) / CPR
+           :  (deltaCount * timeFactor) / CPR;
 }
 
 // Convert RPM to linear velocity (m/s)
@@ -42,7 +48,7 @@ void checkSerialForJointVelocities() {
   if (Serial.available()) {
     String command = Serial.readStringUntil('\n');
     if (command.startsWith("JOINT_VELOCITIES")) {
-      sscanf(command.c_str(), "JOINT_VELOCITIES r%lf,l%lf", &left_wheel_joint_vel, &right_wheel_joint_vel);
+      sscanf(command.c_str(), "JOINT_VELOCITIES r%lf,l%lf", &right_wheel_joint_vel, &left_wheel_joint_vel);
     }
   }
 }
@@ -82,6 +88,7 @@ void loop() {
     double vel1 = rpmToVelocity(currentRPM1);
     double vel2 = rpmToVelocity(currentRPM2);
 
+    // motor1 = left wheel, motor2 = right wheel
     Serial.print("r");
     Serial.print(vel2, 3);  // 4 decimal places
     Serial.print(",");
