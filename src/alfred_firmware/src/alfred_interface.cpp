@@ -161,13 +161,13 @@ hardware_interface::return_type AlfredInterface::read(const rclcpp::Time &,
 
       if(res.at(0) == 'r')
       {
-        velocity_states_.at(0) = std::stod(res.substr(1, res.size()));
-        position_states_.at(0) += velocity_states_.at(0) * dt;
+        velocity_states_.at(1) = std::stod(res.substr(1, res.size()));
+        position_states_.at(1) += velocity_states_.at(1) * dt;
       }
       else if(res.at(0) == 'l')
       {
-        velocity_states_.at(1) = std::stod(res.substr(1, res.size()));
-        position_states_.at(1) += velocity_states_.at(1) * dt;
+        velocity_states_.at(0) = std::stod(res.substr(1, res.size()));
+        position_states_.at(0) += velocity_states_.at(0) * dt;
       }
     }
     RCLCPP_INFO(rclcpp::get_logger("AlfredInterface"), "reading position and velocity");
@@ -186,8 +186,8 @@ hardware_interface::return_type AlfredInterface::write(const rclcpp::Time &,
   std::string compensate_zeros_left = "";
   
   message_stream << std::fixed << std::setprecision(2) << "JOINT_VELOCITIES " <<
-    "r"  << velocity_commands_.at(0) << 
-    ",l" << velocity_commands_.at(1) << "\n";
+    "r"  << velocity_commands_.at(1) << 
+    ",l" << velocity_commands_.at(0) << "\n";
 
   
   try

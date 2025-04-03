@@ -16,8 +16,8 @@ diff_cont:
     base_frame_id: base_link
     odom_frame_id: odom
     enable_odom_tf: true   
-    left_wheel_names: ['left_wheel_joint']
     right_wheel_names: ['right_wheel_joint']
+    left_wheel_names: ['left_wheel_joint']
     wheel_separation: 0.600
     wheel_radius: 0.12
     command_interfaces:
