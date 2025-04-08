@@ -22,6 +22,9 @@ sudo apt install -y ros-jazzy-navigation2
 sudo apt install -y ros-jazzy-nav2-bringup
 sudo apt install -y ros-jazzy-nav2-minimal-tb*
 sudo apt install -y ros-jazzy-laser-filters
+sudo apt install -y ros-jazzy-nav2-simple-commander
+sudo apt install -y ros-jazzy-tf-transformations
+sudo apt install -y python30transform3d
 
 
 echo "All commands executed successfully."
