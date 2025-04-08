@@ -14,7 +14,6 @@
 #define CPR 153550          // Counts per revolution
 #define SAMPLE_TIME 10     // Sample time in milliseconds
 #define MAX_RPM 20        // Max RPM for PWM mapping
-#define WHEEL_RADIUS 0.12   // In meters — adjust to your robot's wheel
 
 // Velocity commands in RPM
 double left_wheel_joint_vel = 0, right_wheel_joint_vel = 0;
@@ -38,12 +37,12 @@ double computeRPM(long deltaCount, int motorID) {
            :  (deltaCount * timeFactor) / CPR;
 }
 
-// Convert RPM to linear velocity (m/s)
-double rpmToVelocity(double rpm) {
-  return (rpm * 2.0 * PI * WHEEL_RADIUS) / 60.0;
+// Convert RPM to angular velocity (rad/s)
+double rpmToAngularVelocity(double rpm) {
+  return (rpm * 2.0 * PI) / 60.0;  // RPM to rad/s conversion
 }
 
-// **Check for new JOINT_VELOCITIES from Serial**
+// Check for new JOINT_VELOCITIES from Serial
 void checkSerialForJointVelocities() {
   if (Serial.available()) {
     String command = Serial.readStringUntil('\n');
@@ -84,16 +83,16 @@ void loop() {
 
     moveMotors(left_wheel_joint_vel, right_wheel_joint_vel);
 
-    // ✅ Send velocity (m/s) instead of RPM
-    double vel1 = rpmToVelocity(currentRPM1);
-    double vel2 = rpmToVelocity(currentRPM2);
+    // Convert RPM to angular velocity (rad/s)
+    double angVel1 = rpmToAngularVelocity(currentRPM1);
+    double angVel2 = rpmToAngularVelocity(currentRPM2);
 
     // motor1 = left wheel, motor2 = right wheel
     Serial.print("r");
-    Serial.print(vel2, 3);  // 4 decimal places
+    Serial.print(angVel2, 3);  // 3 decimal places
     Serial.print(",");
     Serial.print("l");
-    Serial.println(vel1, 3);
+    Serial.println(angVel1, 3);
   }
 }
 
