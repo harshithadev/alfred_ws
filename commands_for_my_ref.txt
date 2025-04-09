@@ -22,7 +22,7 @@ colcon build
 ros2 launch alfred_sim launch_sim.launch.py world:=/home/harshdev/alfred_ws/src/aws-robomaker-small-house-world/worlds/small_house.world
 
 ros2 launch nav2_bringup localization_launch.py map:=/home/hdev/alfred_ws/src/alfred_sim/maps/my_home.yaml use_sim_time:=true
-(set initial pose here)
+(set initial pose here) : must be in map frame. 
 
 ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true map_subscribe_transient_local:=true
 (set destination pose here)
