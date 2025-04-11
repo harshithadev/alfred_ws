@@ -31,6 +31,10 @@ next try : https://question1975.rssing.com/chan-34076341/article78.html
 
 
 ------------------
+ TO get one instance : (to save table pos)
+ ros2 topic echo --once /diff_cont/odom
+
+
 
 To set goal from command line : 
 goal pose message type : geometry_msgs/msg/PoseStamped
