@@ -1,0 +1,1 @@
+# This launch will open everything that is necessary to start mapping.
